@@ -21,7 +21,7 @@ Create a suitable OpenAPI spec for a library to keep track of Video Games (ie yo
 
 ## Extension Activity
 
-Add to the spec from the morning to include user tables (these are not the admin users who are interacting with the endpoints, api interactions are only done by the admin users -  ie the people who know how to login). These users should have some basic information stored about them, and there should be the usual CRUD endpoints to manage users. You also need to allow users to borrow games and return them, keep track of who is currently borrowing what and be able to access records on what games a user has previously borrowed along with which users have borrowed each game. Implement the Spec for this along with the code.
+Add to the spec from the core to include user tables (these are not the admin users who are interacting with the endpoints, api interactions are only done by the admin users -  ie the people who know how to login). These users should have some basic information stored about them, and there should be the usual CRUD endpoints to manage users. You also need to allow users to borrow games and return them, keep track of who is currently borrowing what and be able to access records on what games a user has previously borrowed along with which users have borrowed each game. Implement the Spec for this along with the code.
 
 
 
