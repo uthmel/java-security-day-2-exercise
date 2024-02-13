@@ -15,7 +15,7 @@
 
 Based on the activities from this morning create an API for the following with the usual CRUD endpoints. Make it so that only admin users who have successfully logged in are able to access the endpoints. Use Hibernate and JPA to manage the database connections, and whatever other tools you want to populate the tables. You may have all the dependencies you need in `build.gradle` or you may need to add more as required. 
 
-### API (Core Version)
+#### API (Core Version)
 
 Create a suitable OpenAPI spec for a library to keep track of Video Games (ie you could store information such as Title, GameStudio, Age Rating, Number Of Players, Genre etc) and then implement the API for it, including the simplified security we used in the morning session, to prevent unauthorised users from accessing the endpoints of the library.
 
