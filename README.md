@@ -1,9 +1,9 @@
-# Java Security Day 1 Exercise
+# Java Security Day 2 Exercise
 
 ## Learning Objectives
 - Build an API
-- Prevent unauthorised users from accessing it
-- Secure the application using a simple username and password login
+- Use Authentication and JWT to prevent unauthorised access to it
+- Give different roles of user different levels of access to the library
 
 ## Instructions
 
@@ -13,15 +13,10 @@
 
 ## Core Activity
 
-Based on the activities from this morning create an API for the following with the usual CRUD endpoints. Make it so that only admin users who have successfully logged in are able to access the endpoints. Use Hibernate and JPA to manage the database connections, and whatever other tools you want to populate the tables. You may have all the dependencies you need in `build.gradle` or you may need to add more as required. 
-
-#### API (Core Version)
-
-Create a suitable OpenAPI spec for a library to keep track of Video Games (ie you could store information such as Title, GameStudio, Age Rating, Number Of Players, Genre etc) and then implement the API for it, including the simplified security we used in the morning session, to prevent unauthorised users from accessing the endpoints of the library.
+You are going to build on the activity that you worked on yesterday. You need to implement a basic online lending library which contains books, CDs, DVDs, Video Games and other board games, implement an admin level user who can log in and perform all of the normal CRUD tasks on the items contained within the library. Also implement a normal level of user who can interact with the GET endpoints of the API but cannot perform any of the other functions. Create an OpenAPI spec to show this too.
 
 ## Extension Activity
 
-Add to the spec from the core to include user tables (these are not the admin users who are interacting with the endpoints, api interactions are only done by the admin users -  ie the people who know how to login). These users should have some basic information stored about them, and there should be the usual CRUD endpoints to manage users. You also need to allow users to borrow games and return them, keep track of who is currently borrowing what and be able to access records on what games a user has previously borrowed along with which users have borrowed each game. Implement the Spec for this along with the code.
-
+Extend the core functionality so that normal users can borrow and return items from the library, they should be able to book items out and return them via the API. They should also be able to see a list of their current items and a history of previously borrowed items. Admin users should additionally be able to see the history of items borrowed for any normal user, and what items they currently have on loan. They should also be able to view the history of who has borrowed a given item. As well as building the end points for this also create an OpenAPI spec for this.
 
 
