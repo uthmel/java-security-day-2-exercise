@@ -2,15 +2,10 @@ package com.booleanuk.api.models;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "books")
 public class Book {
@@ -18,24 +13,31 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
+    @Column(name = "title")
     private String title;
 
-    @Column(nullable = false)
+    @Column(name = "author")
     private String author;
 
-    @Column(nullable = false)
+    @Column(name = "publisher")
     private String publisher;
 
-    @Column(nullable = false)
+    @Column(name = "year")
     private int year;
 
+    @Column(name = "genre")
+    private String genre;
 
-    public Book(String title, String author, String publisher, int year) {
+    public Book(String title, String author, String publisher, int year, String genre) {
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.year = year;
+        this.genre = genre;
+    }
+
+    public Book(int id) {
+        this.id = id;
     }
 }
 

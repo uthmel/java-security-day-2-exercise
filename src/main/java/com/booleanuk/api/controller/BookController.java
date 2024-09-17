@@ -25,6 +25,19 @@ public class BookController {
         return ResponseEntity.ok(bookListResponse);
     }
 
+    @PostMapping
+    public ResponseEntity<Response<?>> createBook(@RequestBody Book book) {
+        BookResponse bookResponse = new BookResponse();
+        try {
+            bookResponse.set(this.bookRepository.save(book));
+        } catch (Exception e) {
+            ErrorResponse error = new ErrorResponse();
+            error.set("Bad request");
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(bookResponse, HttpStatus.CREATED);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Response<?>> getBookById(@PathVariable int id) {
         Book book = this.bookRepository.findById(id).orElse(null);
@@ -35,6 +48,46 @@ public class BookController {
         }
         BookResponse bookResponse = new BookResponse();
         bookResponse.set(book);
+        return ResponseEntity.ok(bookResponse);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Response<?>> updateBook(@PathVariable int id, @RequestBody Book book) {
+        Book bookToUpdate = this.bookRepository.findById(id).orElse(null);
+        if (bookToUpdate == null) {
+            ErrorResponse error = new ErrorResponse();
+            error.set("not found");
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        }
+        bookToUpdate.setTitle(book.getTitle());
+        bookToUpdate.setAuthor(book.getAuthor());
+        bookToUpdate.setPublisher(book.getPublisher());
+        bookToUpdate.setYear(book.getYear());
+        bookToUpdate.setGenre(book.getGenre());
+
+        try {
+            bookToUpdate = this.bookRepository.save(bookToUpdate);
+        } catch (Exception e) {
+            ErrorResponse error = new ErrorResponse();
+            error.set("Bad request");
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
+        BookResponse bookResponse = new BookResponse();
+        bookResponse.set(bookToUpdate);
+        return new ResponseEntity<>(bookResponse, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Response<?>> deleteBook(@PathVariable int id) {
+        Book bookToDelete = this.bookRepository.findById(id).orElse(null);
+        if (bookToDelete == null) {
+            ErrorResponse error = new ErrorResponse();
+            error.set("not found");
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        }
+        this.bookRepository.delete(bookToDelete);
+        BookResponse bookResponse = new BookResponse();
+        bookResponse.set(bookToDelete);
         return ResponseEntity.ok(bookResponse);
     }
 }
