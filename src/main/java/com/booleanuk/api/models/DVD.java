@@ -23,7 +23,7 @@ public class DVD {
     private String director;
 
     @Column(nullable = false)
-    private String publisher;
+    private int durationInMinutes;
 
     @Column(nullable = false)
     private int year;
@@ -31,10 +31,10 @@ public class DVD {
     @Column(nullable = false)
     private String genre;
 
-    public DVD(String title, String director, String publisher, int year, String genre) {
+    public DVD(String title, String director, int durationInMinutes, int year, String genre) {
         this.title = title;
         this.director = director;
-        this.publisher = publisher;
+        this.durationInMinutes = durationInMinutes;
         this.year = year;
         this.genre = genre;
     }

@@ -3,92 +3,57 @@ package com.booleanuk.api.controller;
 
 import com.booleanuk.api.models.Book;
 import com.booleanuk.api.repository.BookRepository;
-import com.booleanuk.api.response.BookListResponse;
-import com.booleanuk.api.response.BookResponse;
-import com.booleanuk.api.response.ErrorResponse;
-import com.booleanuk.api.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("books")
+@RequestMapping("/books")
 public class BookController {
+
     @Autowired
     private BookRepository bookRepository;
 
-    @GetMapping
-    public ResponseEntity<BookListResponse> getAllBooks() {
-        BookListResponse bookListResponse = new BookListResponse();
-        bookListResponse.set(this.bookRepository.findAll());
-        return ResponseEntity.ok(bookListResponse);
+    @PostMapping
+    public ResponseEntity<Book> createBook(@RequestBody Book book) {
+        return new ResponseEntity<>(this.bookRepository.save(book), HttpStatus.CREATED);
     }
 
-    @PostMapping
-    public ResponseEntity<Response<?>> createBook(@RequestBody Book book) {
-        BookResponse bookResponse = new BookResponse();
-        try {
-            bookResponse.set(this.bookRepository.save(book));
-        } catch (Exception e) {
-            ErrorResponse error = new ErrorResponse();
-            error.set("Bad request");
-            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(bookResponse, HttpStatus.CREATED);
+    @GetMapping
+    public ResponseEntity<List<Book>> getAllBooks() {
+        return ResponseEntity.ok(this.bookRepository.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response<?>> getBookById(@PathVariable int id) {
-        Book book = this.bookRepository.findById(id).orElse(null);
-        if (book == null) {
-            ErrorResponse error = new ErrorResponse();
-            error.set("not found");
-            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-        }
-        BookResponse bookResponse = new BookResponse();
-        bookResponse.set(book);
-        return ResponseEntity.ok(bookResponse);
+    public ResponseEntity<Book> getOneBook(@PathVariable int id) {
+        Book book = this.bookRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book with ID " + id + " not found."));
+        return ResponseEntity.ok(book);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response<?>> updateBook(@PathVariable int id, @RequestBody Book book) {
-        Book bookToUpdate = this.bookRepository.findById(id).orElse(null);
-        if (bookToUpdate == null) {
-            ErrorResponse error = new ErrorResponse();
-            error.set("not found");
-            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-        }
-        bookToUpdate.setTitle(book.getTitle());
-        bookToUpdate.setAuthor(book.getAuthor());
-        bookToUpdate.setPublisher(book.getPublisher());
-        bookToUpdate.setYear(book.getYear());
-        bookToUpdate.setGenre(book.getGenre());
+    public ResponseEntity<Book> updateBook(@PathVariable int id, @RequestBody Book bookDetails) {
+        Book bookToUpdate = this.bookRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book with ID " + id + " not found."));
 
-        try {
-            bookToUpdate = this.bookRepository.save(bookToUpdate);
-        } catch (Exception e) {
-            ErrorResponse error = new ErrorResponse();
-            error.set("Bad request");
-            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-        }
-        BookResponse bookResponse = new BookResponse();
-        bookResponse.set(bookToUpdate);
-        return new ResponseEntity<>(bookResponse, HttpStatus.CREATED);
+        bookToUpdate.setTitle(bookDetails.getTitle());
+        bookToUpdate.setAuthor(bookDetails.getAuthor());
+        bookToUpdate.setPublisher(bookDetails.getPublisher());
+        bookToUpdate.setGenre(bookDetails.getGenre());
+
+
+        return new ResponseEntity<>(this.bookRepository.save(bookToUpdate), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response<?>> deleteBook(@PathVariable int id) {
-        Book bookToDelete = this.bookRepository.findById(id).orElse(null);
-        if (bookToDelete == null) {
-            ErrorResponse error = new ErrorResponse();
-            error.set("not found");
-            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Void> deleteBook(@PathVariable int id) {
+        Book bookToDelete = this.bookRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book with ID " + id + " not found."));
         this.bookRepository.delete(bookToDelete);
-        BookResponse bookResponse = new BookResponse();
-        bookResponse.set(bookToDelete);
-        return ResponseEntity.ok(bookResponse);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
-

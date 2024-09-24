@@ -1,19 +1,19 @@
 package com.booleanuk.api.models;
 
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+@Data
+@NoArgsConstructor
+@Entity
+@Table(name = "BoardGames")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name = "cds")
-public class CD {
+public class BoardGame {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -22,23 +22,27 @@ public class CD {
     private String title;
 
     @Column(nullable = false)
-    private String artist;
-
-    @Column(nullable = false)
     private String publisher;
-
-    @Column(nullable = false)
-    private int year;
 
     @Column(nullable = false)
     private String genre;
 
-    public CD(String title, String artist, String publisher, int year, String genre) {
+    @Column(nullable = false)
+    private int minPlayers;
+
+    @Column(nullable = false)
+    private int maxPlayers;
+
+    @Column(nullable = false)
+    private int playTimeInMinutes;
+
+    public BoardGame(String title, String publisher, String genre, int minPlayers, int maxPlayers, int playTimeInMinutes) {
         this.title = title;
-        this.artist = artist;
         this.publisher = publisher;
-        this.year = year;
         this.genre = genre;
+        this.minPlayers = minPlayers;
+        this.maxPlayers = maxPlayers;
+        this.playTimeInMinutes = playTimeInMinutes;
     }
 }
 
