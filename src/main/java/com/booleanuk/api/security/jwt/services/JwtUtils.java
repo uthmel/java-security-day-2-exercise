@@ -17,10 +17,8 @@ import java.util.Date;
 @Component
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
-
     @Value("${booleanuk.app.jwtSecret}")
     private String jwtSecret;
-
     @Value("${booleanuk.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
@@ -30,13 +28,9 @@ public class JwtUtils {
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() +jwtExpirationMs))
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(key(), SignatureAlgorithm.HS256)
                 .compact();
-    }
-
-    private Key key() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
 
     public String getUserNameFromJwtToken(String token) {
@@ -58,5 +52,9 @@ public class JwtUtils {
         }
 
         return false;
+    }
+
+    private Key key() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
 }
